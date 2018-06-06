@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.wealthman.dao.UsersMapper">
+
+    <select id="getAmount" resultType="java.lang.Long">
+        SELECT COUNT(id)
+        <include refid="sqlBody"/>
+    </select>
+
+    <select id="search" resultType="io.wealthman.db.entity.UserEntity">
+        SELECT *
+        <include refid="sqlBody"/>
+        ORDER BY
+        <choose>
+            <when test="column.equals('role')">
+                CAST(${column} AS CHAR)
+            </when>
+            <otherwise>
+                ${column}
+            </otherwise>
+        </choose>
+        ${order.clause}
+        LIMIT
+        <choose>
+            <when test="startRow != null">
+                #{startRow},
+            </when>
+            <otherwise>0,</otherwise>
+        </choose>
+        <choose>
+            <when test="count != null">
+                #{count}
+            </when>
+            <otherwise>9223372036854775807</otherwise>
+        </choose>
+    </select>
+
+    <sql id="sqlBody">
+        FROM users
+        WHERE LOWER(firstName) LIKE LOWER(CONCAT('%', IFNULL(#{firstName},''), '%'))
+        AND LOWER(lastName) LIKE LOWER(CONCAT('%', IFNULL(#{lastName},''), '%'))
+        AND email LIKE CONCAT('%', IFNULL(#{email},''), '%')
+        AND registrationDate BETWEEN #{registrationDate.from} AND #{registrationDate.to}
+        <if test="roles != null and !roles.isEmpty">
+            AND role in
+            <foreach collection="roles" item="item" open="(" separator="," close=")">
+                #{item.name}
+            </foreach>
+        </if>
+        <if test="statuses != null and !statuses.isEmpty">
+            AND status in
+            <foreach collection="statuses" item="item" open="(" separator="," close=")">
+                #{item.name}
+            </foreach>
+        </if>
+    </sql>
+</mapper>
