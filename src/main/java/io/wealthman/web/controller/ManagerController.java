@@ -2,11 +2,13 @@ package io.wealthman.web.controller;
 
 import io.wealthman.common.Methods;
 import io.wealthman.common.Paths;
+import io.wealthman.db.entity.ManagerEntity;
 import io.wealthman.db.entity.User;
 import io.wealthman.requests.CreateUserArguments;
 import io.wealthman.services.ManagerService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,13 +38,34 @@ public class ManagerController {
 
     @PreAuthorize("hasAnyAuthority('Manager')")
     @DeleteMapping(Methods.DELETE)
-    public User delete(@PathVariable final Long userID) {
+    public ManagerEntity delete(@PathVariable final Long userID) {
         return managerService.delete(userID);
     }
 
     @PreAuthorize("hasAnyAuthority('Manager')")
     @PostMapping(value = Methods.SEARCH)
-    public User userSearch(@PathVariable final Long id) {
-        return
+    public ManagerEntity userSearch(@PathVariable final Long userID) {
+        return managerService.searchUser(userID);
     }
+
+    @PreAuthorize("hasAnyAuthority('Manager')")
+    @GetMapping(Methods.PORTFOLIO)
+    public ManagerEntity getPortfolio(@PathVariable final Long portfolioID) {
+        return managerService.getListOfPortfolio(portfolioID);
+    }
+
+    @PreAuthorize("hasAnyAuthority('Manager')")
+    @GetMapping(Methods.REQUESTS)
+    public ManagerEntity getInvestorRequests(@PathVariable final String reauests) {
+        return managerService.getInvestorRequests(reauests);
+    }
+
+    @PreAuthorize("hasAnyAuthority('Manager')")
+    @GetMapping(Methods.ALGHORITHMS)
+    public ManagerEntity getAlgorithms(@PathVariable final Long algorithmsID) {
+        return managerService.getAlgorithms(algorithmsID);
+    }
+
+
+
 }

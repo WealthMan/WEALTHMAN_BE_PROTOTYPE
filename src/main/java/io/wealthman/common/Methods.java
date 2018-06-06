@@ -7,6 +7,9 @@ public class Methods {
     public static final String DELETE = "/delete";
     public static final String SEARCH = "/search";
     public static final String USER_ID = "/{id}";
+    public static final String PORTFOLIO = "/{portfolioID}";
+    public static final String REQUESTS = "/{requestID}";
+    public static final String ALGHORITHMS = "/{alghorithmID}";
 
     /* Authentication & registration */
     public static final String SIGN_IN = "/signIn";
