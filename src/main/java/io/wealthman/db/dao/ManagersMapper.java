@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
-import org.springframework.data.repository.query.Param;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -15,7 +15,6 @@ import java.util.List;
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 @Component
 @Mapper
-
 public interface ManagersMapper {
     @Delete("DELETE FROM users WHERE id = #{id}")
     Boolean delete(final Long id);
@@ -35,6 +34,9 @@ public interface ManagersMapper {
     default boolean isExists(final String email) {
         return getByEmail(email) != null;
     }
+
+    @Select("SELECT portfolioID FROM portfolio  WHERE portfolioID = #{portfolioID}")
+    List<ManagerEntity> getListOfPortfolio( @Param("portfolioID") final Long portfolioID);
 
     @Insert("INSERT INTO users (role, email, passwordHash, firstName, lastName, status, verified)"
             + "VALUES (#{role}, #{email}, #{passwordHash}, #{firstName}, #{lastName}, #{status}, #{verified})")

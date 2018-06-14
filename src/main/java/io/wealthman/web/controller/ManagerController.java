@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * GET Dialog with Investor, POST
  * GET List of requests from Investor + UPDATE (Approve, Cancel)
@@ -50,7 +52,7 @@ public class ManagerController {
 
     @PreAuthorize("hasAnyAuthority('Manager')")
     @GetMapping(Methods.PORTFOLIO)
-    public ManagerEntity getPortfolio(@PathVariable final Long portfolioID) {
+    public List<ManagerEntity> getPortfolio(@PathVariable final Long portfolioID) {
         return managerService.getListOfPortfolio(portfolioID);
     }
 
