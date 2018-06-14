@@ -19,5 +19,7 @@ public class ManagerEntity {
     private String email;
     private String wallet;
     private String portfolio;
+    private String dialog;
+
 
 }
